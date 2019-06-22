@@ -1,0 +1,49 @@
+@import services._
+
+@import scala.collection.mutable._
+
+@(people: ListBuffer[Person])(fd: FormatData)(implicit request: RequestHeader)
+
+@main("Person - List", request){
+	<div class="row">
+		<div class="col-md-12">
+			<h1 class="font-bold">:List:.</h1>
+			<hr>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			@if(people != null){
+				<table class="table table-hover table-condensed" id="mytable">
+					<thead>
+						<tr>
+							<th class="font-text">ID</th>
+							<th>Name</th>
+							<th class="font-text">Birthday</th>
+							<th class="font-text">Select</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for(person <- people){
+							<tr>
+								<td class="font-text">@person.id</td>
+								<td>@person.name</td>
+								<td class="font-text">@fd.formatDateToView(person.birthday)</td>
+								<td class="font-text"><a href='@routes.PersonController.details(person.id)' class="btn btn-info">SELECT</a></td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}else{
+				<h3>No data registered.</h3>
+			}
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<a href='@routes.PersonController.add()' class="btn btn-success pull-right col-md-2">New</a>
+		</div>
+	</div>
+}

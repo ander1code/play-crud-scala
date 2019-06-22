@@ -1,0 +1,35 @@
+# HOMECONTROLLER
+
+GET     /                           controllers.HomeController.index
+
+GET     /error/:code                controllers.HomeController.error(code: Int)
+
+# PERSONCONTROLLER
+
+GET     /person                     controllers.PersonController.index
+
+GET     /person/add                 controllers.PersonController.add
+
+GET     /person/details/:id         controllers.PersonController.details(id: Int)
+
+GET     /person/edit/:id            controllers.PersonController.edit(id: Int)
+
++ nocsrf
+POST    /person/save                controllers.PersonController.save
+
++ nocsrf
+POST    /person/update              controllers.PersonController.update
+
+GET     /person/delete         		controllers.PersonController.delete
+
+# LOGINCONTROLLER
+
+GET     /login                      controllers.LoginController.index
+
+POST    /login                      controllers.LoginController.login
+
+GET     /logoff                     controllers.LoginController.logoff
+
+# STATIC RESOURCES
+
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

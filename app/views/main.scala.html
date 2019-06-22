@@ -1,0 +1,113 @@
+@(title: String, request: RequestHeader)(content: Html)
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>@title</title>
+
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-theme.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-datetimepicker.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/font-awesome.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/prettify-1.0.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/jquery.dataTables.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+</head>
+<body>
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="@routes.HomeController.index">playCrud</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="@routes.HomeController.index">Home</a></li>
+                @if(request.session.get("logged")){
+                    <li><a href="@routes.PersonController.index">Person</a></li>
+                }
+            </ul>
+            @if(request.session.get("logged")){
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a style="cursor: pointer;" id="lnkLogoff"><span class="glyphicon glyphicon-log-out"></span> Logoff</a></li>
+                </ul>
+            }else{
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="@routes.LoginController.index"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            }
+        </div>
+      </div>
+    </nav>
+    
+    @if(request.session.get("logged")){
+        <div class="modal fade" id="mdlLogout" tabindex="-1" role="dialog" aria-labelledby="mdlLogout" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Question</h4>
+              </div>
+              <div class="modal-body">
+                <p>Do you want logout?</p>
+              </div>
+              <div class="modal-footer">
+                <a class="btn btn-danger col-md-2 pull-right" href="@routes.LoginController.logoff">Yes</a>
+                <button type="button" class="btn btn-default col-md-2 pull-right" data-dismiss="modal">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    }
+
+
+    @if(request.flash.get("message") != None){
+        <div class="container">
+            <div class='@request.flash.get("class")' role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>@request.flash.get("title")</strong> @request.flash.get("message")
+            </div>
+        </div>
+    }
+
+    <div class="container">
+        @content
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="text-muted font-text">@@2019</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="@routes.Assets.versioned("javascripts/jquery-2.1.1.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/jquery.maskMoney.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/moment-with-locales.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/bootstrap-datetimepicker.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/jquery.dataTables.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/dataTables.responsive.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/dataTables.bootstrap.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+</body>
+</html>

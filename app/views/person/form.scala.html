@@ -1,0 +1,138 @@
+@import helper._
+
+@import forms.PersonForm
+
+@(frmPerson: Form[PersonForm], action_form: play.api.mvc.Call, show_div: Boolean)(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@import java.lang.String; var title=""
+
+@if(action_form == routes.PersonController.save){
+	@{title =  "Person - CREATE"}
+}else{
+	@{title =  "Person - EDIT"}
+}
+
+@main(title, request){
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				<h1 class="h1-title">:@title.substring(9).toLowerCase().substring(0, 1).toUpperCase()@title.substring(10).toLowerCase():.</h1>
+			</div>
+			<div class="form-group">
+				<hr>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8 col-md-offset-2">
+			@if(show_div){
+				@if(frmPerson.errors.length > 0){
+					<div class="div-errors">
+						<h3 class="title-errors">List of errors:</h3>
+						<ul class="item-errors">
+							@for(error <- frmPerson.errors) {
+							    <li>@error.message</li>
+							}
+						</ul>
+					</div>
+				}
+			}
+
+			@helper.form(action = action_form, 'enctype -> "multipart/form-data") {
+
+				@CSRF.formField
+
+				@helper.inputText(frmPerson("name"), 'id -> "name", '_label -> "Name", '_showConstraints -> false, '_showErrors -> false, 'class -> "form-control")
+
+				@helper.inputText(frmPerson("email"), 'id -> "email", '_label -> "E-mail", '_showConstraints -> false, '_showErrors -> false, 'class -> "form-control")
+
+				@helper.inputText(frmPerson("salary"), 'id -> "salary", '_label -> "Salary", '_showConstraints -> false, '_showErrors -> false, 'class -> "form-control")
+
+				@helper.inputText(frmPerson("birthday"), 'id -> "birthday", '_label -> "Birthday", '_showConstraints -> false, '_showErrors -> false, 'class -> "form-control")
+
+				@select(
+				    field = frmPerson("gender"),
+				    options = Seq(("M" -> "Male"), ("F" -> "Female")),
+				    'id -> "gender", 
+				    '_label -> "Gender", 
+				    '_showConstraints -> false, 
+				    '_showErrors -> false,
+				    'class -> "form-control"
+				)
+
+				@*	
+				@if(action_form == routes.PersonController.update){
+					<div class="form-group">
+						<img class="pull-right img-person img-responsive" src='@request.session.get("picture")' alt="" disabled="true">
+		        	</div>
+	      		}
+				*@
+
+				@helper.inputFile(frmPerson("picture"), 'id -> "picture", '_label -> "Picture", '_showConstraints -> false, '_showErrors -> false, 'name -> "picture", 'class -> "form-control", 'disabled -> true)
+				
+				<div class="form-group">
+					<hr>
+				</div>
+
+				@if(action_form == routes.PersonController.save){
+					<div class="form-group">
+						<button type="submit" class="btn btn-success col-md-2 pull-right">Create</button>
+						<a class="btn btn-default col-md-2 pull-right" href="@routes.PersonController.index">Cancel</a>
+						<button type="reset" class="btn btn-primary col-md-2 pull-right">Reset</button>
+					</div>
+				}
+
+				@if(action_form == routes.PersonController.update){
+					<div class="form-group">
+						<button type="button" class="btn btn-warning col-md-2 pull-right" data-toggle="modal" data-target="#mdlEdit">Edit</button>
+						<a class="btn btn-default col-md-2 pull-right" href="@routes.PersonController.index">Cancel</a>
+						<button type="button" class="btn btn-danger col-md-2 pull-right" data-toggle="modal" data-target="#mdlDelete">Delete</button>
+					</div>
+				}
+
+				@if(action_form == routes.PersonController.update){
+
+			        <div class="modal fade" id="mdlEdit" tabindex="-1" role="dialog" aria-labelledby="mdlLogout" aria-hidden="true">
+			          <div class="modal-dialog">
+			            <div class="modal-content">
+			              <div class="modal-header">
+			                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                <h4 class="modal-title">Question</h4>
+			              </div>
+			              <div class="modal-body">
+			                <p>Do you want edit this record?</p>
+			              </div>
+			              <div class="modal-footer">
+			                <button type="submit" class="btn btn-warning col-md-2 pull-right">Yes</button>
+			                <button type="button" class="btn btn-default col-md-2 pull-right" data-dismiss="modal">No</button>
+			              </div>
+			            </div>
+			          </div>
+			        </div>
+
+			        <div class="modal fade" id="mdlDelete" tabindex="-1" role="dialog" aria-labelledby="mdlLogout" aria-hidden="true">
+			          <div class="modal-dialog">
+			            <div class="modal-content">
+			              <div class="modal-header">
+			                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			                <h4 class="modal-title">Question</h4>
+			              </div>
+			              <div class="modal-body">
+			                <p>Do you want delete this record?</p>
+			              </div>
+			              <div class="modal-footer">
+			                <a class="btn btn-danger col-md-2 pull-right" href="@routes.PersonController.delete()">Yes</a>
+			                <button type="button" class="btn btn-default col-md-2 pull-right" data-dismiss="modal">No</button>
+			              </div>
+			            </div>
+			          </div>
+			        </div>
+    			}
+			}
+		</div>
+	</div>
+}
+
+<script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>

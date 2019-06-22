@@ -1,0 +1,59 @@
+@import services._
+
+@(person: Person)(fd: FormatData)(implicit request: RequestHeader)
+
+@main("Person - DETAILS", request){
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				<h1 class="h1-title">:Details:.</h1>
+			</div>
+			<div class="form-group">
+				<hr>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-offset-2 col-md-8 col-md-offset-2">
+	  <div class="row">
+	    <div class="col-md-6">
+	      <div class="form-group">
+	        <label for="name">Name</label>
+	        <p class="data-details">@person.name</p>
+	      </div>
+	      <div class="form-group">
+	        <label for="name">Email</label>
+	        <p class="data-details">@person.email</p>
+	      </div>
+	      <div class="form-group">
+	        <label for="name">Salary</label>
+	        <p class="data-details">@person.salary</p>
+	      </div>
+	      <div class="form-group">
+	        <label for="name">Birthday</label>
+	        <p class="data-details">@fd.formatDateToView(person.birthday)</p>
+	      </div>
+	      <div class="form-group">
+	        <label for="name">Gender</label>
+	        <p class="data-details">@fd.formatGender(person.gender.toString)</p>
+	      </div>
+	    </div>
+	    <div class="col-md-6">
+	      <div class="form-group">
+	      	@*
+	        <img class="pull-right img-rounded img-details" src='@person.picture' alt='@person.name'>
+	        *@
+	        <img class="pull-right img-rounded img-details" src='@routes.Assets.versioned("images/no-picture.jpg")' alt='@person.name'>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="col-md-12 margin-top-20">
+	  	<hr>
+	    <div class="row">
+	      <a href="@routes.PersonController.edit(person.id)" class="btn btn-warning pull-right col-md-3" id="btnEdit">Edit</a>
+	      <a href="@routes.PersonController.index" class="btn btn-default pull-right col-md-3">Cancel</a>
+	    </div>
+	  </div>
+	</div>
+}
